@@ -1,0 +1,48 @@
+const router = require('express').Router()
+const repository = require('./repository')
+const controller = require('../../service/middlewares/controller')
+
+
+module.exports = router
+
+router.get('/',
+    controller(async (req, res, next) => {
+        const result = await repository.listar<%= props.name %>()
+        res.ok(result)
+    })
+)
+
+router.get('/:id',
+    controller(async (req, res, next) => {
+        const result = await repository.buscar<%= props.name %>(req.params.id)
+        res.ok(result)
+    })
+)
+
+router.post('/',
+    controller(async (req, res, next) => {
+        const result = await repository.cadastrar<%= props.name %>(req.body)
+        if (result.success()) res.ok()
+
+        res.badRequest(error(result))
+    })
+)
+
+router.put('/',
+    controller(async (req, res, next) => {
+        const result = await repository.atualizar<%= props.name %>(req.body)
+        if (result.success()) res.ok()
+
+        res.badRequest(error(result))
+    })
+)
+
+router.delete('/:id',
+    controller(async (req, res, next) => {
+        const result = await repository.excluir<%= props.name %>(req.params.id)
+        if (result.success()) res.ok()
+
+        res.badRequest(result)
+    })
+)
+
